@@ -1,7 +1,8 @@
 package com.scmspain.services;
 
 import com.scmspain.application.services.TweetService;
-import com.scmspain.infrastructure.database.TweetRepository;
+import com.scmspain.application.services.TweetRepository;
+import com.scmspain.infrastructure.database.TweetEntityManagerRepository;
 import com.scmspain.infrastructure.database.entities.Tweet;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class TweetServiceTest {
     @Before
     public void setUp() {
         this.entityManager = mock(EntityManager.class);
-        TweetRepository tweetRepository = new TweetRepository(entityManager);
+        TweetRepository tweetRepository = new TweetEntityManagerRepository(entityManager);
         this.metricWriter = mock(MetricWriter.class);
         this.tweetService = new TweetService(tweetRepository, metricWriter);
     }

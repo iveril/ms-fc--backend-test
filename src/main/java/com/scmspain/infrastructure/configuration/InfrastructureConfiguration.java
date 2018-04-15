@@ -9,14 +9,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jmx.export.MBeanExporter;
 
-import com.scmspain.infrastructure.database.TweetRepository;
+import com.scmspain.application.services.TweetRepository;
+import com.scmspain.infrastructure.database.TweetEntityManagerRepository;
 
 @Configuration
 public class InfrastructureConfiguration {
 
     @Bean
     public TweetRepository getTweetRepository(final EntityManager entityManager) {
-        return new TweetRepository(entityManager);
+        return new TweetEntityManagerRepository(entityManager);
     }
 
     @Bean

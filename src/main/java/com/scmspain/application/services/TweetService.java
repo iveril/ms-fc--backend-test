@@ -1,6 +1,5 @@
 package com.scmspain.application.services;
 
-import com.scmspain.infrastructure.database.TweetRepository;
 import com.scmspain.infrastructure.database.entities.Tweet;
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
