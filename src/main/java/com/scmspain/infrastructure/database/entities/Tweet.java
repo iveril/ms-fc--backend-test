@@ -1,5 +1,7 @@
 package com.scmspain.infrastructure.database.entities;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,9 @@ public class Tweet {
     @Column
     private Long pre2015MigrationStatus = 0L;
 
+    @Column
+    private Date publicationDate;
+
     /**
      * Constructor to help the persistence framework to instantiate the entity.
      */
@@ -32,12 +37,14 @@ public class Tweet {
     /**
      * Constructor with parameters.
      *
-     * @param publisher Tweet's publisher.
-     * @param text Tweet's text.
+     * @param publisher Creator of the tweet.
+     * @param text Content of the tweet.
+     * @param publicationDate Publication date of the tweet.
      */
-    public Tweet(final String publisher, final String text) {
+    public Tweet(final String publisher, final String text, final Date publicationDate) {
         this.publisher = publisher;
         this.text = text;
+        this.publicationDate = publicationDate;
     }
 
     /**
@@ -56,6 +63,15 @@ public class Tweet {
      */
     public String getText() {
         return text;
+    }
+
+    /**
+     * Gets the publication date of the tweet.
+     *
+     * @return Publidation date.
+     */
+    public Date getPublicationDate() {
+        return publicationDate;
     }
 
 }

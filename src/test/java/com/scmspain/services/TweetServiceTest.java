@@ -46,7 +46,7 @@ public class TweetServiceTest {
 
     @Test
     public void shouldInsertANewTweet() {
-        tweetService.publish(GUYBRUSH, VALID_MESSAGE);
+        this.tweetService.publish(GUYBRUSH, VALID_MESSAGE);
         InOrder inOrder = inOrder(metricWriter, entityManager);
         inOrder.verify(metricWriter).increment(any(Delta.class));
         inOrder.verify(entityManager).persist(any(Tweet.class));

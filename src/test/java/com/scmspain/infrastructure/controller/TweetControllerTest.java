@@ -2,6 +2,7 @@ package com.scmspain.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scmspain.infrastructure.configuration.TestConfiguration;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,6 +74,31 @@ public class TweetControllerTest {
         return post("/tweet")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(format("{\"publisher\": \"%s\", \"tweet\": \"%s\"}", publisher, tweet));
+    }
+
+    @Test
+    public void shouldListAllTweetsSortedByPublicationDateDescendingOrder() throws Exception {
+        mockMvc.perform(newTweet("First", "This is the first and older tweet.")).andExpect(status().is(201));
+        mockMvc.perform(newTweet("Second", "This is the second tweet.")).andExpect(status().is(201));
+        mockMvc.perform(newTweet("Third", "This is the third tweet.")).andExpect(status().is(201));
+        mockMvc.perform(newTweet("Fourth", "This is the first and newer tweet.")).andExpect(status().is(201));
+
+        MvcResult getResult =
+            mockMvc
+                .perform(get("/tweet"))
+                .andExpect(status().is(200))
+                .andReturn();
+
+        String content = getResult.getResponse().getContentAsString();
+        List<LinkedHashMap> tweets = new ObjectMapper().readValue(content, List.class);
+
+        assertThat(tweets).isSortedAccordingTo(this::decreasingPublicationDateTweetComparator);
+    }
+
+    private int decreasingPublicationDateTweetComparator(Map tweet1, Map tweet2) {
+        Long object1 = (Long) tweet1.get("publicationDate");
+        Long object2 = (Long) tweet2.get("publicationDate");
+        return -object1.compareTo(object2);
     }
 
 }

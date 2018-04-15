@@ -1,5 +1,6 @@
 package com.scmspain.infrastructure.database;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class TweetRepository implements TweetService {
 
     @Override
     public void publish(String publisher, String text) {
-        Tweet tweet = new Tweet(publisher, text);
+        Tweet tweet = new Tweet(publisher, text, new Date());
         this.entityManager.persist(tweet);
     }
 
@@ -41,7 +42,7 @@ public class TweetRepository implements TweetService {
     public List<TweetResponse> listAll() {
         TypedQuery<Long> query =
             this.entityManager
-                .createQuery("SELECT id FROM Tweet AS tweetId WHERE pre2015MigrationStatus<>99 ORDER BY id DESC", Long.class);
+                .createQuery("SELECT id FROM Tweet WHERE pre2015MigrationStatus<>99 ORDER BY publicationDate DESC", Long.class);
 
         return
             query
@@ -59,7 +60,7 @@ public class TweetRepository implements TweetService {
      */
     private TweetResponse getTweet(final Long id) {
         final Tweet tweet = this.entityManager.find(Tweet.class, id);
-        return new TweetResponse(tweet.getPublisher(), tweet.getText());
+        return new TweetResponse(tweet.getPublisher(), tweet.getText(), tweet.getPublicationDate());
     }
 
 }
