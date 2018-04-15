@@ -1,7 +1,8 @@
 package com.scmspain.services;
 
-import com.scmspain.application.services.BasicTweetService;
+import com.scmspain.application.services.TweetBasicService;
 import com.scmspain.application.services.MetricService;
+import com.scmspain.application.services.TweetMetricService;
 import com.scmspain.application.services.TweetRepository;
 import com.scmspain.domain.TweetService;
 import com.scmspain.infrastructure.database.TweetEntityManagerRepository;
@@ -39,7 +40,9 @@ public class TweetServiceTest {
         this.metricWriter = mock(MetricWriter.class);
         MetricService metricService = new SpringActuatorMetricService(metricWriter);
 
-        this.tweetService = new BasicTweetService(tweetRepository, metricService);
+        TweetService tweetBasicService = new TweetBasicService(tweetRepository);
+
+        this.tweetService = new TweetMetricService(tweetBasicService, metricService);
     }
 
     @Test
