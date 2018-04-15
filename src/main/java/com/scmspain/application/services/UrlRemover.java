@@ -1,9 +1,9 @@
 package com.scmspain.application.services;
 
 /**
- * Extractor of URLs from a String for the some protocols.
+ * Remove URLs from a String for some protocols.
  */
-public class UrlExtractor {
+public class UrlRemover {
 
     private static final String WHITE_SPACE = " ";
     private static final String HTTP_PROTOCOL = "http://";
@@ -15,20 +15,20 @@ public class UrlExtractor {
      * @param text Text.
      * @return Text without URLs.
      */
-    public String extract(final String text) {
-        String cleanText = extract(text, HTTP_PROTOCOL);
-        return extract(cleanText, HTTPS_PROTOCOL);
+    public String removeUrls(final String text) {
+        String cleanText = removeUrls(text, HTTP_PROTOCOL);
+        return removeUrls(cleanText, HTTPS_PROTOCOL);
     }
 
-    private String extract(final String text, final String protocol) {
+    private String removeUrls(final String text, final String protocol) {
         if (text.contains(protocol)) {
-            String newText = extractUrl(text, protocol);
-            return extract(newText, protocol);
+            String newText = removeUrl(text, protocol);
+            return removeUrls(newText, protocol);
         }
         return text;
     }
 
-    private String extractUrl(String text, String protocol) {
+    private String removeUrl(String text, String protocol) {
         int urlStart = text.indexOf(protocol);
         int urlEnd = text.indexOf(WHITE_SPACE, urlStart);
         if (urlEnd == -1) {
