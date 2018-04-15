@@ -1,8 +1,9 @@
 package com.scmspain.infrastructure.configuration;
 
+import com.scmspain.application.services.BasicTweetService;
 import com.scmspain.application.services.MetricService;
+import com.scmspain.domain.TweetService;
 import com.scmspain.infrastructure.controller.TweetController;
-import com.scmspain.application.services.TweetService;
 import com.scmspain.application.services.TweetRepository;
 
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,7 @@ public class TweetConfiguration {
 
     @Bean
     public TweetService getTweetService(TweetRepository tweetRepository, MetricService metricService) {
-        return new TweetService(tweetRepository, metricService);
+        return new BasicTweetService(tweetRepository, metricService);
     }
 
     @Bean

@@ -15,13 +15,13 @@ public interface TweetRepository {
      * @param publisher Creator of the tweet.
      * @param text Content of the tweet.
      */
-    void publishTweet(String publisher, String text);
+    void save(String publisher, String text);
 
     /**
      * Recover a list with all the tweets from repository.
      *
      * @return Retrieved list of tweets.
      */
-    List<TweetResponse> listAllTweets();
+    List<TweetResponse> findAll();
 
 }

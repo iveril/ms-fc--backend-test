@@ -1,8 +1,9 @@
 package com.scmspain.services;
 
+import com.scmspain.application.services.BasicTweetService;
 import com.scmspain.application.services.MetricService;
-import com.scmspain.application.services.TweetService;
 import com.scmspain.application.services.TweetRepository;
+import com.scmspain.domain.TweetService;
 import com.scmspain.infrastructure.database.TweetEntityManagerRepository;
 import com.scmspain.infrastructure.database.entities.Tweet;
 import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
@@ -33,14 +34,14 @@ public class TweetServiceTest {
         this.metricWriter = mock(MetricWriter.class);
         MetricService metricService = new SpringActuatorMetricService(metricWriter);
 
-        this.tweetService = new TweetService(tweetRepository, metricService);
+        this.tweetService = new BasicTweetService(tweetRepository, metricService);
     }
 
     @Test
     public void shouldInsertANewTweet() {
         String publisher = "Guybrush Threepwood";
         String text = "I am Guybrush Threepwood, mighty pirate.";
-        tweetService.publishTweet(publisher, text);
+        tweetService.publish(publisher, text);
         InOrder inOrder = inOrder(metricWriter, entityManager);
         inOrder.verify(metricWriter).increment(any(Delta.class));
         inOrder.verify(entityManager).persist(any(Tweet.class));
@@ -48,7 +49,7 @@ public class TweetServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowAnExceptionWhenTweetLengthIsInvalid() {
-        tweetService.publishTweet("Pirate", "LeChuck? He's the guy that went to the Governor's for dinner and never wanted to leave. He fell for her in a big way, but she told him to drop dead. So he did. Then things really got ugly.");
+        tweetService.publish("Pirate", "LeChuck? He's the guy that went to the Governor's for dinner and never wanted to leave. He fell for her in a big way, but she told him to drop dead. So he did. Then things really got ugly.");
     }
 
 }

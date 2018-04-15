@@ -1,8 +1,8 @@
 package com.scmspain.infrastructure.controller;
 
+import com.scmspain.domain.TweetService;
 import com.scmspain.domain.command.PublishTweetCommand;
 import com.scmspain.domain.model.TweetResponse;
-import com.scmspain.application.services.TweetService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,13 +21,13 @@ public class TweetController {
 
     @GetMapping("/tweet")
     public List<TweetResponse> listAllTweets() {
-        return this.tweetService.listAllTweets();
+        return this.tweetService.listAll();
     }
 
     @PostMapping("/tweet")
     @ResponseStatus(CREATED)
     public void publishTweet(@RequestBody PublishTweetCommand publishTweetCommand) {
-        this.tweetService.publishTweet(publishTweetCommand.getPublisher(), publishTweetCommand.getTweet());
+        this.tweetService.publish(publishTweetCommand.getPublisher(), publishTweetCommand.getTweet());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

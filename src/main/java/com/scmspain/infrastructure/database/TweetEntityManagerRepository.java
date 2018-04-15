@@ -38,7 +38,7 @@ public class TweetEntityManagerRepository implements TweetRepository {
      * @param text Content of the tweet.
      */
     @Override
-    public void publishTweet(String publisher, String text) {
+    public void save(String publisher, String text) {
         Tweet tweet = new Tweet(publisher, text);
         this.entityManager.persist(tweet);
     }
@@ -49,7 +49,7 @@ public class TweetEntityManagerRepository implements TweetRepository {
      * @return Retrieved list of tweets.
      */
     @Override
-    public List<TweetResponse> listAllTweets() {
+    public List<TweetResponse> findAll() {
         TypedQuery<Long> query =
             this.entityManager
                 .createQuery("SELECT id FROM Tweet AS tweetId WHERE pre2015MigrationStatus<>99 ORDER BY id DESC", Long.class);
