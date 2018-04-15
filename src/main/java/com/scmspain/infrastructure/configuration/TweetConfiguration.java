@@ -24,8 +24,8 @@ public class TweetConfiguration {
     }
 
     @Bean
-    public TweetController getTweetConfiguration(final CommandBus commandBus, final @Qualifier("mainTweetService") TweetService tweetService) {
-        return new TweetController(commandBus, tweetService);
+    public TweetController getTweetConfiguration(final CommandBus commandBus) {
+        return new TweetController(commandBus);
     }
 
 }

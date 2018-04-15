@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.command.CommandBus;
+import com.scmspain.domain.command.ListAllTweetsCommandHandler;
 import com.scmspain.domain.command.PublishTweetCommandHandler;
 import com.scmspain.infrastructure.commandbus.Registry;
 import com.scmspain.infrastructure.commandbus.SpringCommandBus;
@@ -25,6 +26,11 @@ public class CommandBusConfiguration {
     @Bean
     public PublishTweetCommandHandler getPublishTweetCommandHandler(@Qualifier("mainTweetService") final TweetService tweetService) {
         return new PublishTweetCommandHandler(tweetService);
+    }
+
+    @Bean
+    public ListAllTweetsCommandHandler getListAllTweetsCommandHandler(@Qualifier("mainTweetService") final TweetService tweetService) {
+        return new ListAllTweetsCommandHandler(tweetService);
     }
 
 }
