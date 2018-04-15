@@ -1,7 +1,7 @@
 package com.scmspain.application.services;
 
 /**
- *
+ * Extractor of URLs from a String for the some protocols.
  */
 public class UrlExtractor {
 
@@ -10,9 +10,10 @@ public class UrlExtractor {
     private static final String HTTPS_PROTOCOL = "https://";
 
     /**
+     * Given a text removes the URLs contained on it.
      *
-     * @param text
-     * @return
+     * @param text Text.
+     * @return Text without URLs.
      */
     public String extract(final String text) {
         String cleanText = extract(text, HTTP_PROTOCOL);
