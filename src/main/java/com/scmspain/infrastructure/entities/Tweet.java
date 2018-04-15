@@ -1,4 +1,4 @@
-package com.scmspain.infrastructure.configuration.entities;
+package com.scmspain.infrastructure.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

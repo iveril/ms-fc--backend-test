@@ -1,7 +1,7 @@
 package com.scmspain.services;
 
 import com.scmspain.application.services.TweetService;
-import com.scmspain.infrastructure.configuration.entities.Tweet;
+import com.scmspain.infrastructure.entities.Tweet;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
