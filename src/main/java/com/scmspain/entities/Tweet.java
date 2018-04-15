@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+/**
+ * Tweet entity.
+ */
 @Entity
 public class Tweet {
 
@@ -15,45 +18,44 @@ public class Tweet {
     @Column(nullable = false)
     private String publisher;
 
-    @Column(nullable = false, length = 140)
-    private String tweet;
+    @Column(name = "tweet", nullable = false, length = 140)
+    private String text;
 
-    @Column (nullable=true)
+    @Column
     private Long pre2015MigrationStatus = 0L;
 
-    public Tweet() {
+    /**
+     * Constructor to help the persistence framework to instantiate the entity.
+     */
+    private Tweet() { }
+
+    /**
+     * Constructor with parameters.
+     *
+     * @param publisher Tweet's publisher.
+     * @param text Tweet's text.
+     */
+    public Tweet(final String publisher, final String text) {
+        this.publisher = publisher;
+        this.text = text;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    /**
+     * Gets the publisher of the tweet.
+     *
+     * @return Publisher.
+     */
     public String getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getTweet() {
-        return tweet;
-    }
-
-    public void setTweet(String tweet) {
-        this.tweet = tweet;
-    }
-
-    public Long getPre2015MigrationStatus() {
-        return pre2015MigrationStatus;
-    }
-
-    public void setPre2015MigrationStatus(Long pre2015MigrationStatus) {
-        this.pre2015MigrationStatus = pre2015MigrationStatus;
+    /**
+     * Gets the text of the tweet.
+     *
+     * @return Text.
+     */
+    public String getText() {
+        return text;
     }
 
 }
