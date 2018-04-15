@@ -8,26 +8,26 @@ import com.scmspain.domain.TweetService;
 import com.scmspain.domain.model.TweetResponse;
 
 /**
- * Basic tweet service implementation.
+ * Tweet service implementation that adds validation to another wrapped tweet service.
  */
-public class TweetBasicService implements TweetService {
+public class TweetValidationService implements TweetService {
 
     private static final int MAX_CHARACTERS = 140;
 
-    private final TweetRepository tweetRepository;
+    private final TweetService tweetService;
 
     /**
      * Constructor.
      *
-     * @param tweetRepository Tweet repository.
+     * @param tweetService Tweet service to wrap.
      */
-    public TweetBasicService(final TweetRepository tweetRepository) {
-        this.tweetRepository = tweetRepository;
+    public TweetValidationService(final TweetService tweetService) {
+        this.tweetService = tweetService;
     }
 
     @Override
     public List<TweetResponse> listAll() {
-        return tweetRepository.findAll();
+        return tweetService.listAll();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TweetBasicService implements TweetService {
         Assert.isTrue(publisherIsNotEmpty(publisher), "Publisher must not be empty");
         Assert.isTrue(textIsNotEmpty(text), "Tweet must not be empty");
         Assert.isTrue(textNotTooLong(text), "Tweet must not be greater than " + MAX_CHARACTERS + " characters");
-        this.tweetRepository.save(publisher, text);
+        this.tweetService.publish(publisher, text);
     }
 
     private boolean textNotTooLong(String text) {

@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jmx.export.MBeanExporter;
 
 import com.scmspain.application.services.MetricService;
-import com.scmspain.application.services.TweetRepository;
-import com.scmspain.infrastructure.database.TweetEntityManagerRepository;
+import com.scmspain.domain.TweetService;
+import com.scmspain.infrastructure.database.TweetRepository;
 import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
 
 /**
@@ -31,9 +31,9 @@ public class InfrastructureConfiguration {
         return new SpringActuatorMetricService(metricWriter);
     }
 
-    @Bean
-    public TweetRepository getTweetRepository(final EntityManager entityManager) {
-        return new TweetEntityManagerRepository(entityManager);
+    @Bean("tweetRepository")
+    public TweetService getTweetRepository(final EntityManager entityManager) {
+        return new TweetRepository(entityManager);
     }
 
 }

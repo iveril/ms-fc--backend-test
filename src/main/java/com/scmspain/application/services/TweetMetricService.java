@@ -6,7 +6,7 @@ import com.scmspain.domain.TweetService;
 import com.scmspain.domain.model.TweetResponse;
 
 /**
- * Tweet service implementation with basic functionality and metrics.
+ * Tweet service implementation that adds metric to another wrapped tweet service.
  */
 public class TweetMetricService implements TweetService {
 
@@ -16,7 +16,7 @@ public class TweetMetricService implements TweetService {
     /**
      * Constructor.
      *
-     * @param tweetService Tweet service.
+     * @param tweetService Tweet service to wrap.
      * @param metricService Metrics service.
      */
     public TweetMetricService(final TweetService tweetService, final MetricService metricService) {
