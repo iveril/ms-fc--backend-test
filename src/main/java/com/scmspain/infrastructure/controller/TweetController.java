@@ -1,7 +1,7 @@
 package com.scmspain.infrastructure.controller;
 
 import com.scmspain.domain.command.PublishTweetCommand;
-import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.domain.model.TweetResponse;
 import com.scmspain.application.services.TweetService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class TweetController {
     }
 
     @GetMapping("/tweet")
-    public List<Tweet> listAllTweets() {
+    public List<TweetResponse> listAllTweets() {
         return this.tweetService.listAllTweets();
     }
 

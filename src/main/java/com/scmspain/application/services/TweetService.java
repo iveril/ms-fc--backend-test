@@ -1,6 +1,6 @@
 package com.scmspain.application.services;
 
-import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.domain.model.TweetResponse;
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class TweetService {
         }
     }
 
-    public List<Tweet> listAllTweets() {
+    public List<TweetResponse> listAllTweets() {
         this.metricWriter.increment(new Delta<Number>("times-queried-tweets", 1));
         return this.tweetRepository.listAllTweets();
     }

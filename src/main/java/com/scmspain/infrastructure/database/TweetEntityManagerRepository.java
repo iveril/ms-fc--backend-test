@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.scmspain.application.services.TweetRepository;
+import com.scmspain.domain.model.TweetResponse;
 import com.scmspain.infrastructure.database.entities.Tweet;
 
 /**
@@ -44,15 +45,17 @@ public class TweetEntityManagerRepository implements TweetRepository {
 
     /**
      * Recover a list with all the tweets from repository.
+     *
      * @return Retrieved list of tweets.
      */
     @Override
-    public List<Tweet> listAllTweets() {
+    public List<TweetResponse> listAllTweets() {
         TypedQuery<Long> query =
             this.entityManager
                 .createQuery("SELECT id FROM Tweet AS tweetId WHERE pre2015MigrationStatus<>99 ORDER BY id DESC", Long.class);
 
-        return query
+        return
+            query
                 .getResultList()
                 .stream()
                 .map(this::getTweet)
@@ -61,11 +64,13 @@ public class TweetEntityManagerRepository implements TweetRepository {
 
     /**
      * Recover tweet from repository.
+     *
      * @param id Identifier of the Tweet to retrieve
      * @return Retrieved tweet.
      */
-    private Tweet getTweet(Long id) {
-        return this.entityManager.find(Tweet.class, id);
+    private TweetResponse getTweet(final Long id) {
+        final Tweet tweet = this.entityManager.find(Tweet.class, id);
+        return new TweetResponse(tweet.getPublisher(), tweet.getText());
     }
 
 }

@@ -2,7 +2,7 @@ package com.scmspain.application.services;
 
 import java.util.List;
 
-import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.domain.model.TweetResponse;
 
 /**
  * Repository for tweets.
@@ -19,8 +19,9 @@ public interface TweetRepository {
 
     /**
      * Recover a list with all the tweets from repository.
+     *
      * @return Retrieved list of tweets.
      */
-    List<Tweet> listAllTweets();
+    List<TweetResponse> listAllTweets();
 
 }
