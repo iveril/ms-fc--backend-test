@@ -1,35 +1,42 @@
 package com.scmspain.services;
 
 import com.scmspain.application.services.TweetService;
-import com.scmspain.infrastructure.entities.Tweet;
+import com.scmspain.infrastructure.database.TweetRepository;
+import com.scmspain.infrastructure.database.entities.Tweet;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
+import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 
 import javax.persistence.EntityManager;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class TweetServiceTest {
 
     private EntityManager entityManager;
+    private MetricWriter metricWriter;
     private TweetService tweetService;
 
     @Before
     public void setUp() {
         this.entityManager = mock(EntityManager.class);
-        MetricWriter metricWriter = mock(MetricWriter.class);
-
-        this.tweetService = new TweetService(entityManager, metricWriter);
+        TweetRepository tweetRepository = new TweetRepository(entityManager);
+        this.metricWriter = mock(MetricWriter.class);
+        this.tweetService = new TweetService(tweetRepository, metricWriter);
     }
 
     @Test
     public void shouldInsertANewTweet() {
-        tweetService.publishTweet("Guybrush Threepwood", "I am Guybrush Threepwood, mighty pirate.");
-
-        verify(entityManager).persist(any(Tweet.class));
+        String publisher = "Guybrush Threepwood";
+        String text = "I am Guybrush Threepwood, mighty pirate.";
+        tweetService.publishTweet(publisher, text);
+        InOrder inOrder = inOrder(metricWriter, entityManager);
+        inOrder.verify(metricWriter).increment(any(Delta.class));
+        inOrder.verify(entityManager).persist(any(Tweet.class));
     }
 
     @Test(expected = IllegalArgumentException.class)
