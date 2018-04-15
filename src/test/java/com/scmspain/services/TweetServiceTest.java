@@ -18,7 +18,7 @@ public class TweetServiceTest {
     private TweetService tweetService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.entityManager = mock(EntityManager.class);
         this.metricWriter = mock(MetricWriter.class);
 
@@ -26,14 +26,14 @@ public class TweetServiceTest {
     }
 
     @Test
-    public void shouldInsertANewTweet() throws Exception {
+    public void shouldInsertANewTweet() {
         tweetService.publishTweet("Guybrush Threepwood", "I am Guybrush Threepwood, mighty pirate.");
 
         verify(entityManager).persist(any(Tweet.class));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowAnExceptionWhenTweetLengthIsInvalid() throws Exception {
+    public void shouldThrowAnExceptionWhenTweetLengthIsInvalid() {
         tweetService.publishTweet("Pirate", "LeChuck? He's the guy that went to the Governor's for dinner and never wanted to leave. He fell for her in a big way, but she told him to drop dead. So he did. Then things really got ugly.");
     }
 
