@@ -14,13 +14,12 @@ import static org.mockito.Mockito.verify;
 public class TweetServiceTest {
 
     private EntityManager entityManager;
-    private MetricWriter metricWriter;
     private TweetService tweetService;
 
     @Before
     public void setUp() {
         this.entityManager = mock(EntityManager.class);
-        this.metricWriter = mock(MetricWriter.class);
+        MetricWriter metricWriter = mock(MetricWriter.class);
 
         this.tweetService = new TweetService(entityManager, metricWriter);
     }
