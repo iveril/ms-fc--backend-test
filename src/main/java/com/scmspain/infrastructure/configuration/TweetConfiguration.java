@@ -1,19 +1,22 @@
 package com.scmspain.infrastructure.configuration;
 
+import com.scmspain.application.services.MetricService;
 import com.scmspain.infrastructure.controller.TweetController;
 import com.scmspain.application.services.TweetService;
 import com.scmspain.application.services.TweetRepository;
 
-import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration for the tweet application.
+ */
 @Configuration
 public class TweetConfiguration {
 
     @Bean
-    public TweetService getTweetService(TweetRepository tweetRepository, MetricWriter metricWriter) {
-        return new TweetService(tweetRepository, metricWriter);
+    public TweetService getTweetService(TweetRepository tweetRepository, MetricService metricService) {
+        return new TweetService(tweetRepository, metricService);
     }
 
     @Bean

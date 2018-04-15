@@ -1,9 +1,12 @@
 package com.scmspain.services;
 
+import com.scmspain.application.services.MetricService;
 import com.scmspain.application.services.TweetService;
 import com.scmspain.application.services.TweetRepository;
 import com.scmspain.infrastructure.database.TweetEntityManagerRepository;
 import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -26,8 +29,11 @@ public class TweetServiceTest {
     public void setUp() {
         this.entityManager = mock(EntityManager.class);
         TweetRepository tweetRepository = new TweetEntityManagerRepository(entityManager);
+
         this.metricWriter = mock(MetricWriter.class);
-        this.tweetService = new TweetService(tweetRepository, metricWriter);
+        MetricService metricService = new SpringActuatorMetricService(metricWriter);
+
+        this.tweetService = new TweetService(tweetRepository, metricService);
     }
 
     @Test

@@ -1,8 +1,6 @@
 package com.scmspain.application.services;
 
 import com.scmspain.domain.model.TweetResponse;
-import org.springframework.boot.actuate.metrics.writer.Delta;
-import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,16 +9,16 @@ import java.util.List;
 public class TweetService {
 
     private final TweetRepository tweetRepository;
-    private final MetricWriter metricWriter;
+    private final MetricService metricService;
 
-    public TweetService(TweetRepository tweetRepository, MetricWriter metricWriter) {
+    public TweetService(TweetRepository tweetRepository, MetricService metricService) {
         this.tweetRepository = tweetRepository;
-        this.metricWriter = metricWriter;
+        this.metricService = metricService;
     }
 
     public void publishTweet(String publisher, String text) {
         if (publisher != null && publisher.length() > 0 && text != null && text.length() > 0 && text.length() < 140) {
-            this.metricWriter.increment(new Delta<Number>("published-tweets", 1));
+            this.metricService.incrementPublishedTweets();
             this.tweetRepository.publishTweet(publisher, text);
         } else {
             throw new IllegalArgumentException("Tweet must not be greater than 140 characters");
@@ -28,7 +26,7 @@ public class TweetService {
     }
 
     public List<TweetResponse> listAllTweets() {
-        this.metricWriter.increment(new Delta<Number>("times-queried-tweets", 1));
+        this.metricService.incrementTimesQueriedTweets();
         return this.tweetRepository.listAllTweets();
     }
 
