@@ -2,6 +2,8 @@ package com.scmspain.application.services;
 
 import java.util.List;
 
+import org.springframework.util.Assert;
+
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.model.TweetResponse;
 
@@ -9,6 +11,8 @@ import com.scmspain.domain.model.TweetResponse;
  * Basic tweet service implementation.
  */
 public class BasicTweetService implements TweetService {
+
+    private static final int MAX_CHARACTERS = 140;
 
     private final TweetRepository tweetRepository;
     private final MetricService metricService;
@@ -32,12 +36,23 @@ public class BasicTweetService implements TweetService {
 
     @Override
     public void publish(final String publisher, final String text) {
-        if (publisher != null && publisher.length() > 0 && text != null && text.length() > 0 && text.length() < 140) {
-            this.metricService.incrementPublishedTweets();
-            this.tweetRepository.save(publisher, text);
-        } else {
-            throw new IllegalArgumentException("Tweet must not be greater than 140 characters");
-        }
+        this.metricService.incrementPublishedTweets();
+        Assert.isTrue(publisherIsNotEmpty(publisher), "Publisher must not be empty");
+        Assert.isTrue(textIsNotEmpty(text), "Tweet must not be empty");
+        Assert.isTrue(textNotTooLong(text), "Tweet must not be greater than " + MAX_CHARACTERS + " characters");
+        this.tweetRepository.save(publisher, text);
+    }
+
+    private boolean textNotTooLong(String text) {
+        return text.length() <= MAX_CHARACTERS;
+    }
+
+    private boolean textIsNotEmpty(String text) {
+        return text != null && text.length() > 0;
+    }
+
+    private boolean publisherIsNotEmpty(String publisher) {
+        return publisher != null && publisher.length() > 0;
     }
 
 }
