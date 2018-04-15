@@ -1,7 +1,8 @@
 package com.scmspain.infrastructure.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.scmspain.infrastructure.configuration.TestConfiguration;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,18 +10,19 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.scmspain.infrastructure.configuration.TestConfiguration;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestConfiguration.class)
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 public class TweetControllerTest {
 
     @Autowired
@@ -62,6 +65,19 @@ public class TweetControllerTest {
     }
 
     @Test
+    public void shouldReturn200WhenDiscardingTweet() throws Exception {
+        mockMvc
+            .perform(newTweet("Me", "Tweet to discard"))
+            .andExpect(status().is(201));
+
+        MvcResult getResult =
+            mockMvc
+                .perform(get("/tweet"))
+                .andExpect(status().is(200))
+                .andReturn();
+    }
+
+    @Test
     public void shouldReturnAllPublishedTweets() throws Exception {
         mockMvc
             .perform(newTweet("Yo", "How are you?"))
@@ -77,18 +93,17 @@ public class TweetControllerTest {
         assertThat(new ObjectMapper().readValue(content, List.class).size()).isEqualTo(1);
     }
 
-    private MockHttpServletRequestBuilder newTweet(String publisher, String tweet) {
-        return post("/tweet")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(format("{\"publisher\": \"%s\", \"tweet\": \"%s\"}", publisher, tweet));
-    }
-
     @Test
     public void shouldListAllTweetsSortedByPublicationDateDescendingOrder() throws Exception {
-        mockMvc.perform(newTweet("First", "This is the first and older tweet.")).andExpect(status().is(201));
-        mockMvc.perform(newTweet("Second", "This is the second tweet.")).andExpect(status().is(201));
-        mockMvc.perform(newTweet("Third", "This is the third tweet.")).andExpect(status().is(201));
-        mockMvc.perform(newTweet("Fourth", "This is the first and newer tweet.")).andExpect(status().is(201));
+        Map<String, String> tweet1 = newMapTweet("First", "First tweet");
+        Map<String, String> tweet2 = newMapTweet("Second", "Second tweet");
+        Map<String, String> tweet3 = newMapTweet("Third", "Third tweet");
+        Map<String, String> tweet4 = newMapTweet("Fourth", "Fourth tweet");
+
+        mockMvc.perform(newTweet(tweet1)).andExpect(status().is(201));
+        mockMvc.perform(newTweet(tweet2)).andExpect(status().is(201));
+        mockMvc.perform(newTweet(tweet3)).andExpect(status().is(201));
+        mockMvc.perform(newTweet(tweet4)).andExpect(status().is(201));
 
         MvcResult getResult =
             mockMvc
@@ -97,15 +112,26 @@ public class TweetControllerTest {
                 .andReturn();
 
         String content = getResult.getResponse().getContentAsString();
-        List<LinkedHashMap> tweets = new ObjectMapper().readValue(content, List.class);
+        List<Map> tweets = new ObjectMapper().readValue(content, List.class);
 
-        assertThat(tweets).isSortedAccordingTo(this::decreasingPublicationDateTweetComparator);
+        assertThat(tweets).containsExactly(tweet4, tweet3, tweet2, tweet1);
     }
 
-    private int decreasingPublicationDateTweetComparator(Map tweet1, Map tweet2) {
-        Long object1 = (Long) tweet1.get("publicationDate");
-        Long object2 = (Long) tweet2.get("publicationDate");
-        return -object1.compareTo(object2);
+    private MockHttpServletRequestBuilder newTweet(Map<String, String> tweet) {
+        return newTweet(tweet.get("publisher"), tweet.get("tweet"));
+    }
+
+    private MockHttpServletRequestBuilder newTweet(String publisher, String tweet) {
+        return post("/tweet")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(format("{\"publisher\": \"%s\", \"tweet\": \"%s\"}", publisher, tweet));
+    }
+
+    private Map<String, String> newMapTweet(final String publisher, final String tweet) {
+        Map<String, String> map = new LinkedHashMap<>();
+        map.put("publisher", publisher);
+        map.put("tweet", tweet);
+        return map;
     }
 
 }

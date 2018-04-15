@@ -60,7 +60,7 @@ public class TweetRepository implements TweetService {
      */
     private TweetResponse getTweet(final Long id) {
         final Tweet tweet = this.entityManager.find(Tweet.class, id);
-        return new TweetResponse(tweet.getPublisher(), tweet.getText(), tweet.getPublicationDate());
+        return new TweetResponse(tweet.getPublisher(), tweet.getText());
     }
 
 }

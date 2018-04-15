@@ -9,19 +9,16 @@ public class TweetResponse {
 
     private final String publisher;
     private final String tweet;
-    private final Date publicationDate;
 
     /**
      * Constructor.
      *
      * @param publisher Creator of the tweet.
      * @param tweet Content of the tweet.
-     * @param publicationDate Publication date of the tweet.
      */
-    public TweetResponse(final String publisher, final String tweet, final Date publicationDate) {
+    public TweetResponse(final String publisher, final String tweet) {
         this.publisher = publisher;
         this.tweet = tweet;
-        this.publicationDate = publicationDate;
     }
 
     /**
@@ -40,15 +37,6 @@ public class TweetResponse {
      */
     public String getTweet() {
         return tweet;
-    }
-
-    /**
-     * Gets the publication date.
-     *
-     * @return Publication date of the tweet.
-     */
-    public Date getPublicationDate() {
-        return publicationDate;
     }
 
 }
