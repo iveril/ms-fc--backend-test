@@ -1,6 +1,6 @@
 package com.scmspain.infrastructure.configuration;
 
-import com.scmspain.application.services.MetricService;
+import com.scmspain.domain.MetricService;
 import com.scmspain.application.services.TweetMetricService;
 import com.scmspain.application.services.TweetValidationService;
 import com.scmspain.domain.TweetService;

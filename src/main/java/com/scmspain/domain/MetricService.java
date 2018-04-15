@@ -1,4 +1,4 @@
-package com.scmspain.application.services;
+package com.scmspain.domain;
 
 /**
  * Metric service.

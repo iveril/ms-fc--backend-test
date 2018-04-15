@@ -3,7 +3,7 @@ package com.scmspain.infrastructure.metrics;
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 
-import com.scmspain.application.services.MetricService;
+import com.scmspain.domain.MetricService;
 
 /**
  * Metric service implementation based on spring actuator metric writer.

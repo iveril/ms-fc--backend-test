@@ -2,6 +2,7 @@ package com.scmspain.application.services;
 
 import java.util.List;
 
+import com.scmspain.domain.MetricService;
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.model.TweetResponse;
 

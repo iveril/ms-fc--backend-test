@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jmx.export.MBeanExporter;
 
-import com.scmspain.application.services.MetricService;
+import com.scmspain.domain.MetricService;
 import com.scmspain.domain.TweetService;
 import com.scmspain.infrastructure.database.TweetRepository;
 import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
