@@ -26,8 +26,10 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestConfiguration.class)
 public class TweetControllerTest {
+
     @Autowired
     private WebApplicationContext context;
+
     private MockMvc mockMvc;
 
     @Before
@@ -37,22 +39,27 @@ public class TweetControllerTest {
 
     @Test
     public void shouldReturn200WhenInsertingAValidTweet() throws Exception {
-        mockMvc.perform(newTweet("Prospect", "Breaking the law"))
+        mockMvc
+            .perform(newTweet("Prospect", "Breaking the law"))
             .andExpect(status().is(201));
     }
 
     @Test
     public void shouldReturn400WhenInsertingAnInvalidTweet() throws Exception {
-        mockMvc.perform(newTweet("Schibsted Spain", "We are Schibsted Spain (look at our home page http://www.schibsted.es/), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome!"))
-                .andExpect(status().is(400));
+        mockMvc
+            .perform(newTweet("Schibsted Spain", "We are Schibsted Spain (look at our home page http://www.schibsted.es/), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome!"))
+            .andExpect(status().is(400));
     }
 
     @Test
     public void shouldReturnAllPublishedTweets() throws Exception {
-        mockMvc.perform(newTweet("Yo", "How are you?"))
-                .andExpect(status().is(201));
+        mockMvc
+            .perform(newTweet("Yo", "How are you?"))
+            .andExpect(status().is(201));
 
-        MvcResult getResult = mockMvc.perform(get("/tweet"))
+        MvcResult getResult =
+            mockMvc
+                .perform(get("/tweet"))
                 .andExpect(status().is(200))
                 .andReturn();
 

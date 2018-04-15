@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 @Transactional
 public class TweetService {
+
     private EntityManager entityManager;
     private MetricWriter metricWriter;
 
@@ -65,4 +66,5 @@ public class TweetService {
         }
         return result;
     }
+
 }

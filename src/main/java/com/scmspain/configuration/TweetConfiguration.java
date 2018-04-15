@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 
 @Configuration
 public class TweetConfiguration {
+
     @Bean
     public TweetService getTweetService(EntityManager entityManager, MetricWriter metricWriter) {
         return new TweetService(entityManager, metricWriter);
@@ -19,4 +20,5 @@ public class TweetConfiguration {
     public TweetController getTweetConfiguration(TweetService tweetService) {
         return new TweetController(tweetService);
     }
+
 }

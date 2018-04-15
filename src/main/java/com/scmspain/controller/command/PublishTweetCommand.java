@@ -1,6 +1,7 @@
 package com.scmspain.controller.command;
 
 public class PublishTweetCommand {
+
     private String publisher;
     private String tweet;
 
@@ -19,4 +20,5 @@ public class PublishTweetCommand {
     public void setTweet(String tweet) {
         this.tweet = tweet;
     }
+
 }
