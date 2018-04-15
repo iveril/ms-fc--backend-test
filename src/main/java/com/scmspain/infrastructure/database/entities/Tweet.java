@@ -20,7 +20,7 @@ public class Tweet {
     @Column(nullable = false)
     private String publisher;
 
-    @Column(name = "tweet", nullable = false, length = 140)
+    @Column(name = "tweet", nullable = false, length = 2000)
     private String text;
 
     @Column

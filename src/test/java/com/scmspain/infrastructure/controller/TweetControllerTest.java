@@ -48,6 +48,13 @@ public class TweetControllerTest {
     }
 
     @Test
+    public void shouldReturn200WhenInsertingAValidTweetWithUrls() throws Exception {
+        mockMvc
+            .perform(newTweet("Prospect", "Breaking the law: http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com"))
+            .andExpect(status().is(201));
+    }
+
+    @Test
     public void shouldReturn400WhenInsertingAnInvalidTweet() throws Exception {
         mockMvc
             .perform(newTweet("Schibsted Spain", "We are Schibsted Spain (look at our home page http://www.schibsted.es/), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome! Text added to make it fail."))
