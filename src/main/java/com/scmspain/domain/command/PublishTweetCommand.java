@@ -3,7 +3,7 @@ package com.scmspain.domain.command;
 /**
  * Command for publish a tweet.
  */
-public class PublishTweetCommand {
+public class PublishTweetCommand implements Command<Void> {
 
     private String publisher;
     private String tweet;

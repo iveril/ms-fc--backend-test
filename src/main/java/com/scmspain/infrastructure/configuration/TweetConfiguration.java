@@ -4,6 +4,7 @@ import com.scmspain.domain.MetricService;
 import com.scmspain.application.services.TweetMetricService;
 import com.scmspain.application.services.TweetValidationService;
 import com.scmspain.domain.TweetService;
+import com.scmspain.domain.command.CommandBus;
 import com.scmspain.infrastructure.controller.TweetController;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,8 +24,8 @@ public class TweetConfiguration {
     }
 
     @Bean
-    public TweetController getTweetConfiguration(@Qualifier("mainTweetService") TweetService tweetService) {
-        return new TweetController(tweetService);
+    public TweetController getTweetConfiguration(final CommandBus commandBus, final @Qualifier("mainTweetService") TweetService tweetService) {
+        return new TweetController(commandBus, tweetService);
     }
 
 }
