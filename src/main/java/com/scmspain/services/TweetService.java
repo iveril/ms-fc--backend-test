@@ -15,8 +15,8 @@ import java.util.List;
 @Transactional
 public class TweetService {
 
-    private EntityManager entityManager;
-    private MetricWriter metricWriter;
+    private final EntityManager entityManager;
+    private final MetricWriter metricWriter;
 
     public TweetService(EntityManager entityManager, MetricWriter metricWriter) {
         this.entityManager = entityManager;
@@ -45,8 +45,8 @@ public class TweetService {
       Parameter - id - id of the Tweet to retrieve
       Result - retrieved Tweet
     */
-    public Tweet getTweet(Long id) {
-      return this.entityManager.find(Tweet.class, id);
+    private Tweet getTweet(Long id) {
+        return this.entityManager.find(Tweet.class, id);
     }
 
     /**
@@ -55,7 +55,7 @@ public class TweetService {
       Result - retrieved Tweet
     */
     public List<Tweet> listAllTweets() {
-        List<Tweet> result = new ArrayList<Tweet>();
+        List<Tweet> result = new ArrayList<>();
         this.metricWriter.increment(new Delta<Number>("times-queried-tweets", 1));
         TypedQuery<Long> query = this.entityManager.createQuery("SELECT id FROM Tweet AS tweetId WHERE pre2015MigrationStatus<>99 ORDER BY id DESC", Long.class);
         List<Long> ids = query.getResultList();
