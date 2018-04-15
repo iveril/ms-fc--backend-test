@@ -26,6 +26,7 @@ public class TweetServiceTest {
     private static final String PIRATE = "Pirate";
     private static final String VALID_MESSAGE = "I am Guybrush Threepwood, mighty pirate.";
     private static final String TOO_LONG_MESSAGE = "LeChuck? He's the guy that went to the Governor's for dinner and never wanted to leave. He fell for her in a big way, but she told him to drop dead. So he did. Then things really got ugly.";
+    private static final String VALID_MESSAGE_WITH_URLS = "Link http 1 http://www.foogle.com - link https 1 https://www.foogle.com - link http 2 http://www.foogle.com - link https 2 https://www.foogle.com";
 
     private EntityManager entityManager;
     private MetricWriter metricWriter;
@@ -75,6 +76,14 @@ public class TweetServiceTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowAnExceptionWhenTweetTextLengthIsInvalid() {
         this.tweetService.publish(PIRATE, TOO_LONG_MESSAGE);
+    }
+
+    @Test
+    public void shouldNotCountUrlsForTweetLength() {
+        this.tweetService.publish(GUYBRUSH, VALID_MESSAGE_WITH_URLS);
+        InOrder inOrder = inOrder(metricWriter, entityManager);
+        inOrder.verify(metricWriter).increment(any(Delta.class));
+        inOrder.verify(entityManager).persist(any(Tweet.class));
     }
 
 }

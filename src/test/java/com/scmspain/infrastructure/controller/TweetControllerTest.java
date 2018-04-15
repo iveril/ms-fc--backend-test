@@ -50,7 +50,7 @@ public class TweetControllerTest {
     @Test
     public void shouldReturn400WhenInsertingAnInvalidTweet() throws Exception {
         mockMvc
-            .perform(newTweet("Schibsted Spain", "We are Schibsted Spain (look at our home page http://www.schibsted.es/), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome!"))
+            .perform(newTweet("Schibsted Spain", "We are Schibsted Spain (look at our home page http://www.schibsted.es/), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome! Text added to make it fail."))
             .andExpect(status().is(400));
     }
 

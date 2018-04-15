@@ -13,6 +13,7 @@ public class TweetValidationService implements TweetService {
     private static final int MAX_CHARACTERS = 140;
 
     private final TweetService tweetService;
+    private final UrlExtractor urlExtractor;
 
     /**
      * Constructor.
@@ -21,6 +22,7 @@ public class TweetValidationService implements TweetService {
      */
     public TweetValidationService(final TweetService tweetService) {
         this.tweetService = tweetService;
+        this.urlExtractor = new UrlExtractor();
     }
 
     @Override
@@ -42,16 +44,16 @@ public class TweetValidationService implements TweetService {
         this.tweetService.publish(publisher, text);
     }
 
-    private boolean textTooLong(String text) {
-        return text.length() > MAX_CHARACTERS;
-    }
-
-    private boolean textEmpty(String text) {
+    private boolean textEmpty(final String text) {
         return text == null || text.isEmpty();
     }
 
-    private boolean publisherEmpty(String publisher) {
+    private boolean publisherEmpty(final String publisher) {
         return publisher == null || publisher.isEmpty();
+    }
+
+    private boolean textTooLong(final String text) {
+        return urlExtractor.extract(text).length() > MAX_CHARACTERS;
     }
 
 }
