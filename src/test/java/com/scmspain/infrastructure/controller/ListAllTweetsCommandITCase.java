@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,7 +21,6 @@ import com.scmspain.infrastructure.configuration.TestConfiguration;
 
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,8 +28,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestConfiguration.class)
-@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
-public class TweetControllerTest {
+public class ListAllTweetsCommandITCase {
 
     @Autowired
     private WebApplicationContext context;
@@ -41,56 +38,6 @@ public class TweetControllerTest {
     @Before
     public void setUp() {
         this.mockMvc = webAppContextSetup(this.context).build();
-    }
-
-    @Test
-    public void shouldReturn200WhenInsertingAValidTweet() throws Exception {
-        mockMvc
-            .perform(newTweet("Prospect", "Breaking the law"))
-            .andExpect(status().is(201));
-    }
-
-    @Test
-    public void shouldReturn200WhenInsertingAValidTweetWithUrls() throws Exception {
-        mockMvc
-            .perform(newTweet("Prospect", "Breaking the law: http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com"))
-            .andExpect(status().is(201));
-    }
-
-    @Test
-    public void shouldReturn400WhenInsertingAnInvalidTweet() throws Exception {
-        mockMvc
-            .perform(newTweet("Schibsted Spain", "We are Schibsted Spain (look at our home page http://www.schibsted.es/), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome! Text added to make it fail."))
-            .andExpect(status().is(400));
-    }
-
-    @Test
-    public void shouldReturn200WhenDiscardingTweet() throws Exception {
-        mockMvc
-            .perform(newTweet("Me", "Tweet to discard"))
-            .andExpect(status().is(201));
-
-        MvcResult getResult =
-            mockMvc
-                .perform(get("/tweet"))
-                .andExpect(status().is(200))
-                .andReturn();
-    }
-
-    @Test
-    public void shouldReturnAllPublishedTweets() throws Exception {
-        mockMvc
-            .perform(newTweet("Yo", "How are you?"))
-            .andExpect(status().is(201));
-
-        MvcResult getResult =
-            mockMvc
-                .perform(get("/tweet"))
-                .andExpect(status().is(200))
-                .andReturn();
-
-        String content = getResult.getResponse().getContentAsString();
-        assertThat(new ObjectMapper().readValue(content, List.class).size()).isEqualTo(1);
     }
 
     @Test
