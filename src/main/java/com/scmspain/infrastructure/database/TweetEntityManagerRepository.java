@@ -1,7 +1,7 @@
 package com.scmspain.infrastructure.database;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -48,13 +48,15 @@ public class TweetEntityManagerRepository implements TweetRepository {
      */
     @Override
     public List<Tweet> listAllTweets() {
-        List<Tweet> result = new ArrayList<>();
-        TypedQuery<Long> query = this.entityManager.createQuery("SELECT id FROM Tweet AS tweetId WHERE pre2015MigrationStatus<>99 ORDER BY id DESC", Long.class);
-        List<Long> ids = query.getResultList();
-        for (Long id : ids) {
-            result.add(getTweet(id));
-        }
-        return result;
+        TypedQuery<Long> query =
+            this.entityManager
+                .createQuery("SELECT id FROM Tweet AS tweetId WHERE pre2015MigrationStatus<>99 ORDER BY id DESC", Long.class);
+
+        return query
+                .getResultList()
+                .stream()
+                .map(this::getTweet)
+                .collect(Collectors.toList());
     }
 
     /**
