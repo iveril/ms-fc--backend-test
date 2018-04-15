@@ -1,4 +1,4 @@
-package com.scmspain.controller.command;
+package com.scmspain.domain.command;
 
 /**
  * Command for publish a tweet.

@@ -1,7 +1,7 @@
-package com.scmspain.configuration;
+package com.scmspain.infrastructure.configuration;
 
-import com.scmspain.controller.TweetController;
-import com.scmspain.services.TweetService;
+import com.scmspain.infrastructure.controller.TweetController;
+import com.scmspain.application.services.TweetService;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

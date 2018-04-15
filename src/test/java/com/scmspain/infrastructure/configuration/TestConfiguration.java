@@ -1,4 +1,4 @@
-package com.scmspain.configuration;
+package com.scmspain.infrastructure.configuration;
 
 import com.scmspain.MsFcTechTestApplication;
 import org.springframework.context.annotation.Bean;

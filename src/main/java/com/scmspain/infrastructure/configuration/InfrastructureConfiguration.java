@@ -1,4 +1,4 @@
-package com.scmspain.configuration;
+package com.scmspain.infrastructure.configuration;
 
 import org.springframework.boot.actuate.autoconfigure.ExportMetricWriter;
 import org.springframework.boot.actuate.metrics.jmx.JmxMetricWriter;

@@ -1,8 +1,8 @@
-package com.scmspain.controller;
+package com.scmspain.infrastructure.controller;
 
-import com.scmspain.controller.command.PublishTweetCommand;
-import com.scmspain.entities.Tweet;
-import com.scmspain.services.TweetService;
+import com.scmspain.domain.command.PublishTweetCommand;
+import com.scmspain.infrastructure.configuration.entities.Tweet;
+import com.scmspain.application.services.TweetService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

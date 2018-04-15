@@ -1,6 +1,6 @@
-package com.scmspain.services;
+package com.scmspain.application.services;
 
-import com.scmspain.entities.Tweet;
+import com.scmspain.infrastructure.configuration.entities.Tweet;
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 import org.springframework.stereotype.Service;
