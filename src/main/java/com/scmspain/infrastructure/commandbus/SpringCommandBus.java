@@ -1,6 +1,7 @@
 package com.scmspain.infrastructure.commandbus;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.scmspain.domain.command.Command;
 import com.scmspain.domain.command.CommandBus;
@@ -10,6 +11,7 @@ import com.scmspain.domain.command.CommandHandler;
 /**
  * Basic implementation of a command bus based on Spring framework application context.
  */
+@Component
 public class SpringCommandBus implements CommandBus {
 
     private final Registry registry;

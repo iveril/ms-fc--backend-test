@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.stereotype.Component;
 
 import com.scmspain.domain.command.Command;
 import com.scmspain.domain.command.CommandHandler;
@@ -14,6 +15,7 @@ import com.scmspain.domain.command.CommandHandler;
  * Basic implementation of a registry with the mapping between commands and handlers based on the Spring framework
  * application context.
  */
+@Component
 public class Registry {
 
     private final Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();

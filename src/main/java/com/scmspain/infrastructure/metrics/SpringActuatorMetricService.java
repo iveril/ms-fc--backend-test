@@ -2,12 +2,14 @@ package com.scmspain.infrastructure.metrics;
 
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
+import org.springframework.stereotype.Service;
 
 import com.scmspain.domain.MetricService;
 
 /**
  * Metric service implementation based on spring actuator metric writer.
  */
+@Service
 public class SpringActuatorMetricService implements MetricService {
 
     private static final String PUBLISHED_TWEETS = "published-tweets";
