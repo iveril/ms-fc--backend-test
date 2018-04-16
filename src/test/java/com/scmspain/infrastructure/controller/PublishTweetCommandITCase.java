@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,21 +37,21 @@ public class PublishTweetCommandITCase {
     public void shouldReturn200WhenInsertingAValidTweet() throws Exception {
         mockMvc
             .perform(newTweet("Prospect", "Breaking the law"))
-            .andExpect(status().is(201));
+            .andExpect(status().is(HttpStatus.CREATED.value()));
     }
 
     @Test
     public void shouldReturn200WhenInsertingAValidTweetWithUrls() throws Exception {
         mockMvc
             .perform(newTweet("Prospect", "Breaking the law: http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com http://www.judaspriest.com"))
-            .andExpect(status().is(201));
+            .andExpect(status().is(HttpStatus.CREATED.value()));
     }
 
     @Test
     public void shouldReturn400WhenInsertingAnInvalidTweet() throws Exception {
         mockMvc
             .perform(newTweet("Schibsted Spain", "We are Schibsted Spain (look at our home page http://www.schibsted.es/), we own Vibbo, InfoJobs, fotocasa, coches.net and milanuncios. Welcome! Text added to make it fail."))
-            .andExpect(status().is(400));
+            .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }
 
     private MockHttpServletRequestBuilder newTweet(String publisher, String tweet) {
