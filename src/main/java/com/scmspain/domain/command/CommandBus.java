@@ -13,6 +13,6 @@ public interface CommandBus {
      * @param <R> type of return value.
      * @param <C> type of the command.
      */
-    <R, C extends Command<R>> R execute(C command);
+    <R, C extends Command<R>> R execute(C command) throws CommandException;
 
 }

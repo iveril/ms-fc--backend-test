@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.scmspain.domain.command.Command;
 import com.scmspain.domain.command.CommandBus;
+import com.scmspain.domain.command.CommandException;
 import com.scmspain.domain.command.CommandHandler;
 
 /**
@@ -25,7 +26,7 @@ public class SpringCommandBus implements CommandBus {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <R, C extends Command<R>> R execute(C command) {
+    public <R, C extends Command<R>> R execute(C command) throws CommandException {
         CommandHandler<R, C> commandHandler = (CommandHandler<R, C>) registry.get(command.getClass());
         return commandHandler.handle(command);
     }

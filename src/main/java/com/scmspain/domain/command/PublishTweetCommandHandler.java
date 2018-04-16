@@ -5,7 +5,7 @@ import com.scmspain.domain.TweetService;
 /**
  * Handler for the publish tweet command.
  */
-public class PublishTweetCommandHandler implements CommandHandler<Void, PublishTweetCommand> {
+public class PublishTweetCommandHandler implements CommandHandler<Long, PublishTweetCommand> {
 
     private final TweetService tweetService;
 
@@ -19,9 +19,8 @@ public class PublishTweetCommandHandler implements CommandHandler<Void, PublishT
     }
 
     @Override
-    public Void handle(PublishTweetCommand command) {
-        tweetService.publish(command.getPublisher(), command.getTweet());
-        return null;
+    public Long handle(PublishTweetCommand command) {
+        return tweetService.publish(command.getPublisher(), command.getTweet());
     }
 
 }

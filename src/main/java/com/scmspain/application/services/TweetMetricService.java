@@ -3,6 +3,7 @@ package com.scmspain.application.services;
 import java.util.List;
 
 import com.scmspain.domain.MetricService;
+import com.scmspain.domain.TweetNotFoundException;
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.model.TweetResponse;
 
@@ -32,9 +33,14 @@ public class TweetMetricService implements TweetService {
     }
 
     @Override
-    public void publish(String publisher, String text) {
+    public Long publish(String publisher, String text) {
         metricService.incrementPublishedTweets();
-        tweetService.publish(publisher, text);
+        return tweetService.publish(publisher, text);
+    }
+
+    @Override
+    public void discard(Long tweetId) throws TweetNotFoundException {
+        tweetService.discard(tweetId);
     }
 
 }

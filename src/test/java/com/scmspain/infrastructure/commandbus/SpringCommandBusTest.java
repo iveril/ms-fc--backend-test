@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.scmspain.domain.command.CommandException;
 import com.scmspain.domain.command.CommandHandler;
 import com.scmspain.infrastructure.commandbus.command.HelloCommand;
 
@@ -25,7 +26,7 @@ public class SpringCommandBusTest {
     private SpringCommandBus commandBus;
 
     @Test
-    public void shouldExecuteHandlerForCommand() {
+    public void shouldExecuteHandlerForCommand() throws CommandException {
         when(registry.get(HelloCommand.class)).thenReturn(handler);
 
         HelloCommand command = new HelloCommand("Schibsted");

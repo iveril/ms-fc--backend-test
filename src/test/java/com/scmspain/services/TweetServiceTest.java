@@ -1,12 +1,11 @@
 package com.scmspain.services;
 
-import com.scmspain.domain.MetricService;
-import com.scmspain.application.services.TweetMetricService;
-import com.scmspain.application.services.TweetValidationService;
-import com.scmspain.domain.TweetService;
-import com.scmspain.infrastructure.database.TweetRepository;
-import com.scmspain.infrastructure.database.entities.Tweet;
-import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +13,20 @@ import org.mockito.InOrder;
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
 
-import javax.persistence.EntityManager;
+import com.scmspain.application.services.TweetMetricService;
+import com.scmspain.application.services.TweetValidationService;
+import com.scmspain.domain.MetricService;
+import com.scmspain.domain.TweetService;
+import com.scmspain.domain.model.TweetResponse;
+import com.scmspain.infrastructure.database.TweetRepository;
+import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TweetServiceTest {
 
@@ -84,6 +92,40 @@ public class TweetServiceTest {
         InOrder inOrder = inOrder(metricWriter, entityManager);
         inOrder.verify(metricWriter).increment(any(Delta.class));
         inOrder.verify(entityManager).persist(any(Tweet.class));
+    }
+
+    @Test
+    public void something() {
+        Long idTweet1 = 9997L;
+        Long idTweet2 = 9998L;
+        Long idTweet3 = 9999L;
+        mockEntityManagerQuery(idTweet1, idTweet2, idTweet3);
+
+        Tweet tweet1 = tweet("publisher 9997", "content 9997");
+        Tweet tweet3 = tweet("publisher 9999", "content 9999");
+        mockEntityManagerFind(idTweet1, tweet1);
+        mockEntityManagerFind(idTweet2, null);
+        mockEntityManagerFind(idTweet3, tweet3);
+
+        List<TweetResponse> tweets = this.tweetService.listAll();
+        assertThat(tweets)
+            .hasSize(2)
+            .extracting(TweetResponse::getPublisher)
+            .containsExactly("publisher 9997", "publisher 9999");
+    }
+
+    private void mockEntityManagerQuery(Long... idTweet) {
+        TypedQuery<Long> mockedQuery = mock(TypedQuery.class);
+        when(mockedQuery.getResultList()).thenReturn(Arrays.asList(idTweet));
+        when(entityManager.createQuery(any(String.class), any(Class.class))).thenReturn(mockedQuery);
+    }
+
+    private void mockEntityManagerFind(Long tweetId, Tweet tweet) {
+        when(entityManager.find(Tweet.class, tweetId)).thenReturn(tweet);
+    }
+
+    private Tweet tweet(String publisher, String content) {
+        return new Tweet(publisher, content, new Date());
     }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.scmspain.domain.command.CommandBus;
+import com.scmspain.domain.command.CommandException;
 import com.scmspain.infrastructure.commandbus.command.ByeCommand;
 import com.scmspain.infrastructure.commandbus.command.HelloCommand;
 import com.scmspain.infrastructure.commandbus.handler.ByeCommandHandler;
@@ -34,7 +35,7 @@ public class CommandBusITCase {
     private MessageCollector messageCollector;
 
     @Test
-    public void executeHandlersForGivenCommands() {
+    public void executeHandlersForGivenCommands() throws CommandException {
         String actualStringReturnValue = commandBus.execute(new HelloCommand("Schibsted"));
         Void actualVoidReturnValue = commandBus.execute(new ByeCommand("AEM"));
 

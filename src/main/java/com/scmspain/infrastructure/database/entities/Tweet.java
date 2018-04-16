@@ -29,6 +29,9 @@ public class Tweet {
     @Column
     private Date publicationDate;
 
+    @Column
+    private Boolean discarded = Boolean.FALSE;
+
     /**
      * Constructor to help the persistence framework to instantiate the entity.
      */
@@ -45,6 +48,15 @@ public class Tweet {
         this.publisher = publisher;
         this.text = text;
         this.publicationDate = publicationDate;
+    }
+
+    /**
+     * Gets de identifier of the tweet.
+     *
+     * @return Identifier.
+     */
+    public Long getId() {
+        return id;
     }
 
     /**
@@ -66,12 +78,19 @@ public class Tweet {
     }
 
     /**
-     * Gets the publication date of the tweet.
+     * Gets the disabled mark or the tweet.
      *
-     * @return Publidation date.
+     * @return True if tweet is disabled.
      */
-    public Date getPublicationDate() {
-        return publicationDate;
+    public Boolean getDiscarded() {
+        return discarded;
+    }
+
+    /**
+     * Mark the tweet as discarded.
+     */
+    public void setDiscarded() {
+        this.discarded = true;
     }
 
 }

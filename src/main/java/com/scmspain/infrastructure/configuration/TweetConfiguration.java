@@ -5,6 +5,7 @@ import com.scmspain.application.services.TweetMetricService;
 import com.scmspain.application.services.TweetValidationService;
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.command.CommandBus;
+import com.scmspain.domain.command.DiscardTweetCommandHandler;
 import com.scmspain.domain.command.ListAllTweetsCommandHandler;
 import com.scmspain.domain.command.PublishTweetCommandHandler;
 import com.scmspain.infrastructure.controller.TweetController;
@@ -33,6 +34,11 @@ public class TweetConfiguration {
     @Bean
     public PublishTweetCommandHandler getPublishTweetCommandHandler(@Qualifier("mainTweetService") final TweetService tweetService) {
         return new PublishTweetCommandHandler(tweetService);
+    }
+
+    @Bean
+    public DiscardTweetCommandHandler getDiscardTweetCommandHandler(@Qualifier("mainTweetService") final TweetService tweetService) {
+        return new DiscardTweetCommandHandler(tweetService);
     }
 
     @Bean

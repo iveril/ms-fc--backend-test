@@ -15,6 +15,6 @@ public interface CommandHandler<R, C extends Command<R>> {
      * @return Return value as specified in {@link Command}.
      * {@link Void} if none value returned.
      */
-    R handle(C command);
+    R handle(C command) throws CommandException;
 
 }

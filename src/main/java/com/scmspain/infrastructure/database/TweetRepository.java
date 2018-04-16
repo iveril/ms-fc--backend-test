@@ -2,6 +2,7 @@ package com.scmspain.infrastructure.database;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.scmspain.domain.TweetService;
+import com.scmspain.domain.TweetNotFoundException;
 import com.scmspain.domain.model.TweetResponse;
 import com.scmspain.infrastructure.database.entities.Tweet;
 
@@ -33,9 +35,17 @@ public class TweetRepository implements TweetService {
     }
 
     @Override
-    public void publish(String publisher, String text) {
+    public Long publish(String publisher, String text) {
         Tweet tweet = new Tweet(publisher, text, new Date());
         this.entityManager.persist(tweet);
+        return tweet.getId();
+    }
+
+    @Override
+    public void discard(final Long tweetId) throws TweetNotFoundException {
+        Tweet tweet = getTweet(tweetId);
+        tweet.setDiscarded();
+        this.entityManager.merge(tweet);
     }
 
     @Override
@@ -48,8 +58,25 @@ public class TweetRepository implements TweetService {
             query
                 .getResultList()
                 .stream()
-                .map(this::getTweet)
+                .map(this::getTweetResponse)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Recover tweet from repository.
+     *
+     * @param id Identifier of the Tweet to retrieve
+     * @return Retrieved tweet response.
+     */
+    private Optional<TweetResponse> getTweetResponse(final Long id) {
+        try {
+            Tweet tweet = getTweet(id);
+            return Optional.of(new TweetResponse(tweet.getPublisher(), tweet.getText()));
+        } catch (TweetNotFoundException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -58,9 +85,12 @@ public class TweetRepository implements TweetService {
      * @param id Identifier of the Tweet to retrieve
      * @return Retrieved tweet.
      */
-    private TweetResponse getTweet(final Long id) {
-        final Tweet tweet = this.entityManager.find(Tweet.class, id);
-        return new TweetResponse(tweet.getPublisher(), tweet.getText());
+    public Tweet getTweet(final Long id) throws TweetNotFoundException {
+        Tweet tweet = this.entityManager.find(Tweet.class, id);
+        if (tweet == null) {
+            throw new TweetNotFoundException(id);
+        }
+        return tweet;
     }
 
 }

@@ -21,7 +21,16 @@ public interface TweetService {
      *
      * @param publisher Creator of the tweet.
      * @param text Content of the tweet.
+     * @return Identifier of the published tweet.
      */
-    void publish(String publisher, String text);
+    Long publish(String publisher, String text);
+
+    /**
+     * Discard a tweet.
+     *
+     * @param tweetId Tweet identifier.
+     * @throws TweetNotFoundException if no tweet found for the specified identifier.
+     */
+    void discard(Long tweetId) throws TweetNotFoundException;
 
 }

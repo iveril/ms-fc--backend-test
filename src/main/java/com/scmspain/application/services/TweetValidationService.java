@@ -2,6 +2,7 @@ package com.scmspain.application.services;
 
 import java.util.List;
 
+import com.scmspain.domain.TweetNotFoundException;
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.model.TweetResponse;
 
@@ -31,7 +32,7 @@ public class TweetValidationService implements TweetService {
     }
 
     @Override
-    public void publish(final String publisher, final String text) {
+    public Long publish(final String publisher, final String text) {
         if (publisherEmpty(publisher)) {
             throw new IllegalArgumentException("Publisher must not be empty");
         }
@@ -41,7 +42,15 @@ public class TweetValidationService implements TweetService {
         if (textTooLong(text)) {
             throw new IllegalArgumentException("Tweet must not be greater than " + MAX_CHARACTERS + " characters");
         }
-        this.tweetService.publish(publisher, text);
+        return this.tweetService.publish(publisher, text);
+    }
+
+    @Override
+    public void discard(Long tweetId) throws TweetNotFoundException {
+        if (tweetId == null) {
+            throw new IllegalArgumentException("Tweet identifier must not be empty");
+        }
+        this.tweetService.discard(tweetId);
     }
 
     private boolean textEmpty(final String text) {
