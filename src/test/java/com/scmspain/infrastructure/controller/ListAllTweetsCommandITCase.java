@@ -1,5 +1,6 @@
 package com.scmspain.infrastructure.controller;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +45,10 @@ public class ListAllTweetsCommandITCase {
     }
 
     @Test
-    public void shouldListAllTweetsSortedByPublicationDateDescendingOrder() throws Exception {
-        Map<String, String> tweet1 = newMapTweet("First", "First tweet");
-        Map<String, String> tweet2 = newMapTweet("Second", "Second tweet");
-        Map<String, String> tweet3 = newMapTweet("Third", "Third tweet");
-        Map<String, String> tweet4 = newMapTweet("Fourth", "Fourth tweet");
+    public void shouldListNotDiscardedTweetsSortedByPublicationDateDescendingOrder() throws Exception {
+        List<TestTweet> testTweets = testTweets();
+        this.tweetRepository.discard(testTweets.get(1).tweetId);
+        this.tweetRepository.discard(testTweets.get(3).tweetId);
 
         MvcResult getResult =
             mockMvc
@@ -59,15 +59,43 @@ public class ListAllTweetsCommandITCase {
         String content = getResult.getResponse().getContentAsString();
         List<Map> tweets = new ObjectMapper().readValue(content, List.class);
 
-        assertThat(tweets).containsExactly(tweet4, tweet3, tweet2, tweet1);
+        assertThat(tweets).containsExactly(
+                testTweets.get(5).tweet,
+                testTweets.get(4).tweet,
+                testTweets.get(2).tweet,
+                testTweets.get(0).tweet);
     }
 
-    private Map<String, String> newMapTweet(final String publisher, final String tweet) {
+    private List<TestTweet> testTweets() {
+        List<TestTweet> tweets = new ArrayList<>();
+        tweets.add(newTestTweet("First", "First tweet"));
+        tweets.add(newTestTweet("Second", "Second tweet"));
+        tweets.add(newTestTweet("Third", "Third tweet"));
+        tweets.add(newTestTweet("Fourth", "Fourth tweet"));
+        tweets.add(newTestTweet("Fifth", "Fifth tweet"));
+        tweets.add(newTestTweet("Sixth", "Sixth tweet"));
+        return tweets;
+    }
+
+    private TestTweet newTestTweet(final String publisher, final String tweet) {
+        Long tweetId = this.tweetRepository.publish(publisher, tweet);
+
         Map<String, String> map = new LinkedHashMap<>();
         map.put("publisher", publisher);
         map.put("tweet", tweet);
-        this.tweetRepository.publish(publisher, tweet);
-        return map;
+
+        return new TestTweet(tweetId, map);
+    }
+
+    private static class TestTweet {
+
+        final Long tweetId;
+        final  Map<String, String> tweet;
+
+        private TestTweet(Long tweetId, Map<String, String> tweet) {
+            this.tweetId = tweetId;
+            this.tweet = tweet;
+        }
     }
 
 }

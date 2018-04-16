@@ -52,7 +52,7 @@ public class TweetRepository implements TweetService {
     public List<TweetResponse> listAll() {
         TypedQuery<Long> query =
             this.entityManager
-                .createQuery("SELECT id FROM Tweet WHERE pre2015MigrationStatus<>99 ORDER BY publicationDate DESC", Long.class);
+                .createQuery("SELECT id FROM Tweet WHERE pre2015MigrationStatus<>99 AND discarded = false ORDER BY publicationDate DESC", Long.class);
 
         return
             query
