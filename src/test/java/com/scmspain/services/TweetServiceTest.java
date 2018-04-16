@@ -95,7 +95,7 @@ public class TweetServiceTest {
     }
 
     @Test
-    public void something() {
+    public void shouldListAllAvailableTweetsWithInvalidTweetIdentifiers() {
         Long idTweet1 = 9997L;
         Long idTweet2 = 9998L;
         Long idTweet3 = 9999L;
