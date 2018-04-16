@@ -1,6 +1,13 @@
 package com.scmspain.infrastructure.controller;
 
-import com.scmspain.domain.TweetNotFoundException;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.scmspain.domain.command.CommandBus;
 import com.scmspain.domain.command.CommandException;
 import com.scmspain.domain.command.DiscardTweetCommand;
@@ -9,13 +16,7 @@ import com.scmspain.domain.command.ListAllTweetsCommand;
 import com.scmspain.domain.command.PublishTweetCommand;
 import com.scmspain.domain.model.TweetResponse;
 
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * Rest controller for tweet API.
@@ -53,27 +54,6 @@ public class TweetController {
     @GetMapping("/discarded")
     public List<TweetResponse> listAllDiscardedTweets() throws CommandException {
         return this.commandBus.execute(new ListAllDiscardedTweetsCommand());
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(BAD_REQUEST)
-    @ResponseBody
-    public Object invalidArgumentException(IllegalArgumentException ex) {
-        return getExceptionObject(ex);
-    }
-
-    @ExceptionHandler(TweetNotFoundException.class)
-    @ResponseStatus(NOT_FOUND)
-    @ResponseBody
-    public Object tweetNotFoundException(TweetNotFoundException ex) {
-        return getExceptionObject(ex);
-    }
-
-    private Object getExceptionObject(Exception ex) {
-        return new Object() {
-            public String message = ex.getMessage();
-            public String exceptionClass = ex.getClass().getSimpleName();
-        };
     }
 
 }

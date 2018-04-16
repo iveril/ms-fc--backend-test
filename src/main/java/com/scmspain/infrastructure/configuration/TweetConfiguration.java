@@ -9,6 +9,7 @@ import com.scmspain.domain.command.DiscardTweetCommandHandler;
 import com.scmspain.domain.command.ListAllDiscardedTweetsCommandHandler;
 import com.scmspain.domain.command.ListAllTweetsCommandHandler;
 import com.scmspain.domain.command.PublishTweetCommandHandler;
+import com.scmspain.infrastructure.controller.GlobalExceptionHandler;
 import com.scmspain.infrastructure.controller.TweetController;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,6 +31,11 @@ public class TweetConfiguration {
     @Bean
     public TweetController getTweetController(final CommandBus commandBus) {
         return new TweetController(commandBus);
+    }
+
+    @Bean
+    public GlobalExceptionHandler getGlobalExceptionHandler() {
+        return new GlobalExceptionHandler();
     }
 
     @Bean
