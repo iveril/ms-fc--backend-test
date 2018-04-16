@@ -69,12 +69,12 @@ public class ListAllTweetsCommandITCase {
 
     private List<TestTweet> testTweets() {
         List<TestTweet> tweets = new ArrayList<>();
-        tweets.add(newTestTweet("First", "First tweet"));
-        tweets.add(newTestTweet("Second", "Second tweet"));
-        tweets.add(newTestTweet("Third", "Third tweet"));
-        tweets.add(newTestTweet("Fourth", "Fourth tweet"));
-        tweets.add(newTestTweet("Fifth", "Fifth tweet"));
-        tweets.add(newTestTweet("Sixth", "Sixth tweet"));
+        tweets.add(newTestTweet("First", "First tweet https://www.google.com"));
+        tweets.add(newTestTweet("Second", "Second https://www.google.com tweet"));
+        tweets.add(newTestTweet("Third", "https://www.google.com Third tweet"));
+        tweets.add(newTestTweet("Fourth", "Fourth tweet http://www.google.com"));
+        tweets.add(newTestTweet("Fifth", "Fifth http://www.google.com tweet"));
+        tweets.add(newTestTweet("Sixth", "http://www.google.com Sixth tweet"));
         return tweets;
     }
 

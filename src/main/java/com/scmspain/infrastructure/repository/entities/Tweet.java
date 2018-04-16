@@ -1,11 +1,16 @@
 package com.scmspain.infrastructure.repository.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * Tweet entity.
@@ -20,7 +25,7 @@ public class Tweet {
     @Column(nullable = false)
     private String publisher;
 
-    @Column(name = "tweet", nullable = false, length = 2000)
+    @Column(name = "tweet", nullable = false)
     private String text;
 
     @Column
@@ -34,6 +39,9 @@ public class Tweet {
 
     @Column
     private Boolean discarded = Boolean.FALSE;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tweet", fetch = FetchType.EAGER)
+    private List<TweetUrl> urls = new ArrayList<>();
 
     /**
      * Constructor to help the persistence framework to instantiate the entity.
@@ -103,6 +111,15 @@ public class Tweet {
      */
     public void setDiscardedDate(Date discardedDate) {
         this.discardedDate = discardedDate;
+    }
+
+    /**
+     * Gets the URLs of the tweet.
+     *
+     * @return List of URLs of the tweet.
+     */
+    public List<TweetUrl> getUrls() {
+        return urls;
     }
 
 }

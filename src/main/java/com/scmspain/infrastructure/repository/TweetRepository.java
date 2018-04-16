@@ -11,10 +11,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import com.scmspain.application.services.UrlExtractor;
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.TweetNotFoundException;
 import com.scmspain.domain.model.TweetResponse;
 import com.scmspain.infrastructure.repository.entities.Tweet;
+import com.scmspain.infrastructure.repository.entities.TweetUrl;
 
 /**
  * Repository implementation for tweets with an entity manager.
@@ -36,7 +38,11 @@ public class TweetRepository implements TweetService {
 
     @Override
     public Long publish(String publisher, String text) {
-        Tweet tweet = new Tweet(publisher, text, new Date());
+        UrlExtractor urlExtractor = new UrlExtractor(text);
+        Tweet tweet = new Tweet(publisher, urlExtractor.getText(), new Date());
+        for (String url : urlExtractor.getUrls()) {
+            tweet.getUrls().add(new TweetUrl(tweet, url));
+        }
         this.entityManager.persist(tweet);
         return tweet.getId();
     }
@@ -83,7 +89,8 @@ public class TweetRepository implements TweetService {
     private Optional<TweetResponse> getTweetResponse(final Long id) {
         try {
             Tweet tweet = getTweet(id);
-            return Optional.of(new TweetResponse(tweet.getPublisher(), tweet.getText()));
+            String text = rebuildText(tweet);
+            return Optional.of(new TweetResponse(tweet.getPublisher(), text));
         } catch (TweetNotFoundException e) {
             return Optional.empty();
         }
@@ -101,6 +108,17 @@ public class TweetRepository implements TweetService {
             throw new TweetNotFoundException(id);
         }
         return tweet;
+    }
+
+    private String rebuildText(Tweet tweet) {
+        List<String> urls =
+            tweet
+                .getUrls()
+                .stream()
+                .map(TweetUrl::getUrl)
+                .collect(Collectors.toList());
+
+        return UrlExtractor.rebuild(tweet.getText(), urls);
     }
 
 }
