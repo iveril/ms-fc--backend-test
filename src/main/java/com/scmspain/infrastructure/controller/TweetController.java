@@ -34,15 +34,15 @@ public class TweetController {
         this.commandBus = commandBus;
     }
 
-    @GetMapping("/tweet")
-    public List<TweetResponse> listAllTweets() throws CommandException {
-        return this.commandBus.execute(new ListAllTweetsCommand());
-    }
-
     @PostMapping("/tweet")
     @ResponseStatus(CREATED)
     public void publishTweet(@RequestBody PublishTweetCommand publishTweetCommand) throws CommandException {
         this.commandBus.execute(publishTweetCommand);
+    }
+
+    @GetMapping("/tweet")
+    public List<TweetResponse> listAllTweets() throws CommandException {
+        return this.commandBus.execute(new ListAllTweetsCommand());
     }
 
     @PostMapping("/discarded")
@@ -59,16 +59,17 @@ public class TweetController {
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
     public Object invalidArgumentException(IllegalArgumentException ex) {
-        return new Object() {
-            public String message = ex.getMessage();
-            public String exceptionClass = ex.getClass().getSimpleName();
-        };
+        return getExceptionObject(ex);
     }
 
     @ExceptionHandler(TweetNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
     @ResponseBody
     public Object tweetNotFoundException(TweetNotFoundException ex) {
+        return getExceptionObject(ex);
+    }
+
+    private Object getExceptionObject(Exception ex) {
         return new Object() {
             public String message = ex.getMessage();
             public String exceptionClass = ex.getClass().getSimpleName();

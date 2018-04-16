@@ -27,11 +27,6 @@ public class TweetValidationService implements TweetService {
     }
 
     @Override
-    public List<TweetResponse> listAll() {
-        return tweetService.listAll();
-    }
-
-    @Override
     public Long publish(final String publisher, final String text) {
         if (publisherEmpty(publisher)) {
             throw new IllegalArgumentException("Publisher must not be empty");
@@ -43,6 +38,11 @@ public class TweetValidationService implements TweetService {
             throw new IllegalArgumentException("Tweet must not be greater than " + MAX_CHARACTERS + " characters");
         }
         return this.tweetService.publish(publisher, text);
+    }
+
+    @Override
+    public List<TweetResponse> listAll() {
+        return tweetService.listAll();
     }
 
     @Override

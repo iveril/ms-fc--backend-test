@@ -3,7 +3,7 @@ package com.scmspain.application.services;
 /**
  * Remove URLs from a String for some protocols.
  */
-public class UrlRemover {
+class UrlRemover {
 
     private static final String WHITE_SPACE = " ";
     private static final String HTTP_PROTOCOL = "http://";
@@ -15,7 +15,7 @@ public class UrlRemover {
      * @param text Text.
      * @return Text without URLs.
      */
-    public String removeUrls(final String text) {
+    String removeUrls(final String text) {
         String cleanText = removeUrls(text, HTTP_PROTOCOL);
         return removeUrls(cleanText, HTTPS_PROTOCOL);
     }

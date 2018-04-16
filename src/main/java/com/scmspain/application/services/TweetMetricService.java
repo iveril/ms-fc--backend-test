@@ -27,15 +27,15 @@ public class TweetMetricService implements TweetService {
     }
 
     @Override
-    public List<TweetResponse> listAll() {
-        metricService.incrementTimesQueriedTweets();
-        return tweetService.listAll();
-    }
-
-    @Override
     public Long publish(String publisher, String text) {
         metricService.incrementPublishedTweets();
         return tweetService.publish(publisher, text);
+    }
+
+    @Override
+    public List<TweetResponse> listAll() {
+        metricService.incrementTimesQueriedTweets();
+        return tweetService.listAll();
     }
 
     @Override

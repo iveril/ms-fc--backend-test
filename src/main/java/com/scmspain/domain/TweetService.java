@@ -10,13 +10,6 @@ import com.scmspain.domain.model.TweetResponse;
 public interface TweetService {
 
     /**
-     * List all available tweets sorted by publication date in descending order.
-     *
-     * @return List of tweets.
-     */
-    List<TweetResponse> listAll();
-
-    /**
      * Publish a new tweet.
      *
      * @param publisher Creator of the tweet.
@@ -24,6 +17,13 @@ public interface TweetService {
      * @return Identifier of the published tweet.
      */
     Long publish(String publisher, String text);
+
+    /**
+     * List all available tweets sorted by publication date in descending order.
+     *
+     * @return List of tweets.
+     */
+    List<TweetResponse> listAll();
 
     /**
      * Discard a tweet.
