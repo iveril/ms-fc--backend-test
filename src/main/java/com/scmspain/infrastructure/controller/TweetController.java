@@ -4,6 +4,7 @@ import com.scmspain.domain.TweetNotFoundException;
 import com.scmspain.domain.command.CommandBus;
 import com.scmspain.domain.command.CommandException;
 import com.scmspain.domain.command.DiscardTweetCommand;
+import com.scmspain.domain.command.ListAllDiscardedTweetsCommand;
 import com.scmspain.domain.command.ListAllTweetsCommand;
 import com.scmspain.domain.command.PublishTweetCommand;
 import com.scmspain.domain.model.TweetResponse;
@@ -47,6 +48,11 @@ public class TweetController {
     @PostMapping("/discarded")
     public void discardTweet(@RequestBody DiscardTweetCommand discardTweetCommand) throws CommandException {
         this.commandBus.execute(discardTweetCommand);
+    }
+
+    @GetMapping("/discarded")
+    public List<TweetResponse> listAllDiscardedTweets() throws CommandException {
+        return this.commandBus.execute(new ListAllDiscardedTweetsCommand());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

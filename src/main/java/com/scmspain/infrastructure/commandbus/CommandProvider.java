@@ -30,7 +30,7 @@ class CommandProvider<H extends CommandHandler<?, ?>> {
      * Gets a bean of the proper type from the Spring framework application context.
      * @return Spring bean.
      */
-    public H get() {
+    H get() {
         return applicationContext.getBean(type);
     }
 

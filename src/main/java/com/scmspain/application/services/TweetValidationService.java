@@ -53,6 +53,11 @@ public class TweetValidationService implements TweetService {
         this.tweetService.discard(tweetId);
     }
 
+    @Override
+    public List<TweetResponse> listAllDiscarded() {
+        return tweetService.listAllDiscarded();
+    }
+
     private boolean textEmpty(final String text) {
         return text == null || text.isEmpty();
     }

@@ -45,14 +45,24 @@ public class TweetRepository implements TweetService {
     public void discard(final Long tweetId) throws TweetNotFoundException {
         Tweet tweet = getTweet(tweetId);
         tweet.setDiscarded();
+        tweet.setDiscardedDate(new Date());
         this.entityManager.merge(tweet);
     }
 
     @Override
     public List<TweetResponse> listAll() {
+        return listTweets("SELECT id FROM Tweet WHERE pre2015MigrationStatus<>99 AND discarded = false ORDER BY publicationDate DESC");
+    }
+
+    @Override
+    public List<TweetResponse> listAllDiscarded() {
+        return listTweets("SELECT id FROM Tweet WHERE pre2015MigrationStatus<>99 AND discarded = true ORDER BY discardedDate DESC");
+    }
+
+    private List<TweetResponse> listTweets(String qlString) {
         TypedQuery<Long> query =
             this.entityManager
-                .createQuery("SELECT id FROM Tweet WHERE pre2015MigrationStatus<>99 AND discarded = false ORDER BY publicationDate DESC", Long.class);
+                .createQuery(qlString, Long.class);
 
         return
             query

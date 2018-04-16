@@ -30,6 +30,9 @@ public class Tweet {
     private Date publicationDate;
 
     @Column
+    private Date discardedDate;
+
+    @Column
     private Boolean discarded = Boolean.FALSE;
 
     /**
@@ -91,6 +94,15 @@ public class Tweet {
      */
     public void setDiscarded() {
         this.discarded = true;
+    }
+
+    /**
+     * Sets the discarded date.
+     *
+     * @param discardedDate Discarded date.
+     */
+    public void setDiscardedDate(Date discardedDate) {
+        this.discardedDate = discardedDate;
     }
 
 }

@@ -10,7 +10,7 @@ import com.scmspain.domain.model.TweetResponse;
 public interface TweetService {
 
     /**
-     * List all available tweets.
+     * List all available tweets sorted by publication date in descending order.
      *
      * @return List of tweets.
      */
@@ -32,5 +32,12 @@ public interface TweetService {
      * @throws TweetNotFoundException if no tweet found for the specified identifier.
      */
     void discard(Long tweetId) throws TweetNotFoundException;
+
+    /**
+     * List all discarded tweets sorted by the date it was discarded on in descending order..
+     *
+     * @return List of discarded tweets.
+     */
+    List<TweetResponse> listAllDiscarded();
 
 }

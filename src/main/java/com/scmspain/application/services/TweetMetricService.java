@@ -43,4 +43,9 @@ public class TweetMetricService implements TweetService {
         tweetService.discard(tweetId);
     }
 
+    @Override
+    public List<TweetResponse> listAllDiscarded() {
+        return tweetService.listAllDiscarded();
+    }
+
 }
