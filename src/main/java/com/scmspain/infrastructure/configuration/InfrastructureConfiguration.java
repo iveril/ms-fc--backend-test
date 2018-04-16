@@ -15,7 +15,7 @@ import com.scmspain.domain.TweetService;
 import com.scmspain.domain.command.CommandBus;
 import com.scmspain.infrastructure.commandbus.Registry;
 import com.scmspain.infrastructure.commandbus.SpringCommandBus;
-import com.scmspain.infrastructure.database.TweetRepository;
+import com.scmspain.infrastructure.repository.TweetRepository;
 import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
 
 /**

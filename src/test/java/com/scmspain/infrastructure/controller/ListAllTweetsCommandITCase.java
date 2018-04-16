@@ -17,7 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scmspain.infrastructure.configuration.TestConfiguration;
-import com.scmspain.infrastructure.database.TweetRepository;
+import com.scmspain.infrastructure.repository.TweetRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_CLASS;

@@ -13,8 +13,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.scmspain.domain.TweetNotFoundException;
 import com.scmspain.infrastructure.configuration.TestConfiguration;
-import com.scmspain.infrastructure.database.TweetRepository;
-import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.infrastructure.repository.TweetRepository;
+import com.scmspain.infrastructure.repository.entities.Tweet;
 
 import static java.lang.String.format;
 import static junit.framework.TestCase.assertTrue;

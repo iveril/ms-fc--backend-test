@@ -1,4 +1,4 @@
-package com.scmspain.infrastructure.database;
+package com.scmspain.infrastructure.repository;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.TweetNotFoundException;
 import com.scmspain.domain.model.TweetResponse;
-import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.infrastructure.repository.entities.Tweet;
 
 /**
  * Repository implementation for tweets with an entity manager.

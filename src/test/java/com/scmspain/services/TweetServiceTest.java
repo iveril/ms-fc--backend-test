@@ -18,8 +18,8 @@ import com.scmspain.application.services.TweetValidationService;
 import com.scmspain.domain.MetricService;
 import com.scmspain.domain.TweetService;
 import com.scmspain.domain.model.TweetResponse;
-import com.scmspain.infrastructure.database.TweetRepository;
-import com.scmspain.infrastructure.database.entities.Tweet;
+import com.scmspain.infrastructure.repository.TweetRepository;
+import com.scmspain.infrastructure.repository.entities.Tweet;
 import com.scmspain.infrastructure.metrics.SpringActuatorMetricService;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,4 +1,4 @@
-package com.scmspain.infrastructure.database.entities;
+package com.scmspain.infrastructure.repository.entities;
 
 import java.util.Date;
 
