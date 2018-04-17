@@ -90,7 +90,7 @@ public class TweetRepository implements TweetService {
         try {
             Tweet tweet = getTweet(id);
             String text = rebuildText(tweet);
-            return Optional.of(new TweetResponse(tweet.getPublisher(), text));
+            return Optional.of(new TweetResponse(id, tweet.getPublisher(), text, tweet.getPre2015MigrationStatus()));
         } catch (TweetNotFoundException e) {
             return Optional.empty();
         }

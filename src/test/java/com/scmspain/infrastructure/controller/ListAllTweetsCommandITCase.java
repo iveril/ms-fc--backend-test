@@ -81,9 +81,11 @@ public class ListAllTweetsCommandITCase {
     private TestTweet newTestTweet(final String publisher, final String tweet) {
         Long tweetId = this.tweetRepository.publish(publisher, tweet);
 
-        Map<String, String> map = new LinkedHashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("id", tweetId.intValue());
         map.put("publisher", publisher);
         map.put("tweet", tweet);
+        map.put("pre2015MigrationStatus", 0);
 
         return new TestTweet(tweetId, map);
     }
@@ -91,9 +93,9 @@ public class ListAllTweetsCommandITCase {
     private static class TestTweet {
 
         final Long tweetId;
-        final  Map<String, String> tweet;
+        final  Map<String, Object> tweet;
 
-        private TestTweet(Long tweetId, Map<String, String> tweet) {
+        private TestTweet(Long tweetId, Map<String, Object> tweet) {
             this.tweetId = tweetId;
             this.tweet = tweet;
         }

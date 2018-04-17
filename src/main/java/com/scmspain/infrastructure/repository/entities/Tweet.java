@@ -89,6 +89,15 @@ public class Tweet {
     }
 
     /**
+     * Gets the pre 2015 migration status.
+     *
+     * @return Pre 2015 migration status.
+     */
+    public Long getPre2015MigrationStatus() {
+        return pre2015MigrationStatus;
+    }
+
+    /**
      * Gets the disabled mark or the tweet.
      *
      * @return True if tweet is disabled.
