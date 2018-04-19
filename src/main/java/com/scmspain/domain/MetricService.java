@@ -15,4 +15,14 @@ public interface MetricService {
      */
     void incrementTimesQueriedTweets();
 
+    /**
+     * Increment by one the discarded tweets metrics.
+     */
+    void incrementDiscardedTweets();
+
+    /**
+     * Increment by one the times queried discarded tweets metrics.
+     */
+    void incrementTimesQueriedDiscardedTweets();
+
 }

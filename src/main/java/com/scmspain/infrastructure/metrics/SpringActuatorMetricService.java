@@ -14,6 +14,8 @@ public class SpringActuatorMetricService implements MetricService {
 
     private static final String PUBLISHED_TWEETS = "published-tweets";
     private static final String TIMES_QUERIED_TWEETS = "times-queried-tweets";
+    private static final String DISCARDED_TWEETS = "discarded-tweets";
+    private static final String TIMES_QUERIED_DISCARDED_TWEETS = "times-queried-discarded-tweets";
 
     private final MetricWriter metricWriter;
 
@@ -34,6 +36,16 @@ public class SpringActuatorMetricService implements MetricService {
     @Override
     public void incrementTimesQueriedTweets() {
         metricWriter.increment(deltaOne(TIMES_QUERIED_TWEETS));
+    }
+
+    @Override
+    public void incrementDiscardedTweets() {
+        metricWriter.increment(deltaOne(DISCARDED_TWEETS));
+    }
+
+    @Override
+    public void incrementTimesQueriedDiscardedTweets() {
+        metricWriter.increment(deltaOne(TIMES_QUERIED_DISCARDED_TWEETS));
     }
 
     private Delta<Integer> deltaOne(String name) {

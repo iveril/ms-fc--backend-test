@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.springframework.boot.actuate.metrics.writer.Delta;
 import org.springframework.boot.actuate.metrics.writer.MetricWriter;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class TweetServiceTest {
@@ -90,7 +92,10 @@ public class TweetServiceTest {
     public void shouldNotCountUrlsForTweetLength() {
         this.tweetService.publish(GUYBRUSH, VALID_MESSAGE_WITH_URLS);
         InOrder inOrder = inOrder(metricWriter, entityManager);
-        inOrder.verify(metricWriter).increment(any(Delta.class));
+        ArgumentCaptor<Delta> deltaArgument = ArgumentCaptor.forClass(Delta.class);
+        inOrder.verify(metricWriter).increment(deltaArgument.capture());
+        assertThat("published-tweets").isEqualTo(deltaArgument.getValue().getName());
+        assertThat(1).isEqualTo(deltaArgument.getValue().getValue());
         inOrder.verify(entityManager).persist(any(Tweet.class));
     }
 
@@ -112,6 +117,11 @@ public class TweetServiceTest {
             .hasSize(2)
             .extracting(TweetResponse::getPublisher)
             .containsExactly("publisher 9997", "publisher 9999");
+
+        ArgumentCaptor<Delta> deltaArgument = ArgumentCaptor.forClass(Delta.class);
+        verify(metricWriter).increment(deltaArgument.capture());
+        assertThat("times-queried-tweets").isEqualTo(deltaArgument.getValue().getName());
+        assertThat(1).isEqualTo(deltaArgument.getValue().getValue());
     }
 
     private void mockEntityManagerQuery(Long... idTweet) {

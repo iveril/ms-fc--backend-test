@@ -40,11 +40,13 @@ public class TweetMetricService implements TweetService {
 
     @Override
     public void discard(Long tweetId) throws TweetNotFoundException {
+        metricService.incrementDiscardedTweets();
         tweetService.discard(tweetId);
     }
 
     @Override
     public List<TweetResponse> listAllDiscarded() {
+        metricService.incrementTimesQueriedDiscardedTweets();
         return tweetService.listAllDiscarded();
     }
 
